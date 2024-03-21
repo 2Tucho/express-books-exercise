@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const books = require("./data/books.json")
+const books = require("./data/books.json") // Para pasarme todos los libros
 
 app.use(express.json());
 
@@ -32,19 +32,24 @@ app.get('/middle', (req, res) => {
 /*5*/
 //http://localhost:3000/author/dante-alighieri
 app.get('/author/dante-alighieri', (req, res) => {
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].author == "Dante Alighieri") {
-            return res.status(200).json(books[i].title)
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].author == "Dante Alighieri") {
+            res.status(200).json(books[i].title)
         }
     }
 })
+// Método .FIND ---> Buscar algo en concreto
+/* app.get("/author/dante-alighieri", (req, res) => {
+    const book = books.find((item) => item.author == "Dante Alighieri");
+    res.status(200).json(book.title);
+}); */
 
 /*6*/
 //http://localhost:3000/country/charles-dickens
 app.get('/country/charles-dickens', (req, res) => {
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].author == "Charles Dickens") {
-            return res.status(200).json(books[i].country)
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].author == "Charles Dickens") {
+            res.status(200).json(books[i].country)
         }
     }
 })
@@ -52,10 +57,10 @@ app.get('/country/charles-dickens', (req, res) => {
 /*7*/
 //http://localhost:3000/year&pages/cervantes
 app.get('/year&pages/cervantes', (req, res) => {
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].author == "Miguel de Cervantes") {
-            res.status(200).json({pages: books[i].pages, year: books[i].year})
-            
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].author == "Miguel de Cervantes") {
+            res.status(200).json({ pages: books[i].pages, year: books[i].year })
+
         }
     }
 })
@@ -64,34 +69,45 @@ app.get('/year&pages/cervantes', (req, res) => {
 //http://localhost:3000/country/count/spain
 app.get('/country/count/spain', (req, res) => {
     let count = 0;
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].country == "Spain") {
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].country == "Spain") {
             count += 1
         }
     }
-    return res.status(200).json(count)
+    res.status(200).json(count)
 })
 
 /*9*/
 //http://localhost:3000/country/at-least/germany
 app.get('/country/at-least/germany', (req, res) => {
-    let count = 0;
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].country == "Germany") return res.status(200).json(true)
-    } 
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].country == "Germany") res.status(200).json(true)
+    }
 })
+// Método .SOME ---> Buscar si hay alguno que cumpla la condición ---> true/false
+/* app.get("/country/at-least/germany", (req, res) => {
+    const comparison = books
+        .some(element => element.country === "Germany");
+    res.status(200).json(comparison);
+}); */
 
 /*10*/
 //http://localhost:3000/pages/all-greater/200
 app.get('/pages/all-greater/200', (req, res) => {
     let count = 0;
-    for(let i = 0; i < books.length; i++) {
-        if(books[i].pages > 200) count++
+    for (let i = 0; i < books.length; i++) {
+        if (books[i].pages > 200) count++
     }
-    if(count == 100) {
+    if (count == 100) {
         res.status(200).json(true)
     } else res.status(200).json(false)
 })
+// Método  .EVERY ---> Para comprobar si todos cumplen una condición ---> true/false
+/* app.get("/pages/all-greater/200", (req, res) => {
+    const comparison = books
+        .every(element => element.pages > 100);
+    res.status(200).json(comparison);
+}); */
 
 
 app.listen(port, () => { //Tu servidor va a escuchar en el puerto indicado
